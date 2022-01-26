@@ -8,7 +8,13 @@ public class OpportunityTriggerHandler {
     
     //========================================================= Handler Methods ==========================================================
     
-    
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //Handle logic for when an opportunity is changed to Won (validations and creation of assets)
+    //Parameters:
+    // Map<Id, Opportunity> newly Updated Records
+    // Map<Id, Opportunity> old records
+    // Returns: void
+    //------------------------------------------------------------------------------------------------------------------------------------
     public static void handleClosedWonOpportunities(Map<Id, Opportunity> newObjMap, Map<Id, Opportunity> oldObjMap) {
         Map<Id, Opportunity> wonOppoRecordsMap = new Map<Id, Opportunity>();
         
@@ -44,6 +50,14 @@ public class OpportunityTriggerHandler {
     
     //========================================================= Handler Methods ==========================================================
     
+    
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //validates if the Opportunity has an active Order
+    //Parameters:
+    // List<Opportunity> newly won Records
+    // Lst<Order> related Orders
+    // Returns: void
+    //------------------------------------------------------------------------------------------------------------------------------------
     public static void validateActiveOrderUponConversion(List<Opportunity> wonOpportunities, List<Order> linkedOrderRecords){
         
         //for each Opportunity check if there are active Orders
@@ -62,6 +76,12 @@ public class OpportunityTriggerHandler {
         } 
     }
     
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //When Opportunity is won ans passes the validations, create Assets for each Order Item
+    //Parameters:
+    // List<Order> oders to loop through and corresponding order Items retrieved via inner query
+    // Returns: List<Asset> to be inserted
+    //------------------------------------------------------------------------------------------------------------------------------------
     public static List<Asset> createAssetsForConvertedOpportunities(List<Order> ordersToProcess){
         
         //for each Order and Order Item, create an Asset to link after conversion
@@ -83,46 +103,6 @@ public class OpportunityTriggerHandler {
             }
         }
         return assetsToInsert;
-    }
-    
-
-    private static void postDataCore(String servicetoCall, String body, String currentRecord, Id currentRecordId){
-        String sReturn;
-        
-        // MarteServiceRelativeURL__mdt webserviceCalledInfo = getServiceRelativeURLByName(serviceToCall);
-        //System.debug('webserviceCalledInfo: ' + webserviceCalledInfo.WebServiceMethod__c);
-        Http http= new Http();
-        HttpRequest request = new HttpRequest();
-        HttpResponse response = new HttpResponse();
-        request.setEndpoint('https://eu1.anypoint.mulesoft.com/mocking/api/v1/links/267cf127-5cc9-499d-bb5cfe2d447aa99d/JOINTHEDIGITALHUB/WMAH05ZZZ4B011671');
-        request.setHeader('Client-id', 'b903e91e6c6542a3a4a6e800f37f95ea');
-        request.setHeader('Client-secret', '4d73e495F84E4c47B8a8E37C8F8B96b3');
-        //request.setHeader('correlation-id', '4d73e495F84E4c47B8a8E37C8F8B96b3');
-        request.setHeader('Content-Type', 'application/json');
-        request.setMethod('GET');
-        request.setTimeout(120000);  
-        request.setBody(body);
-        
-        //MarteServiceResponseWrapper.GenericResponse parsedResponseBody = new MarteServiceResponseWrapper.GenericResponse();
-        // Map<SObjectField, Object> fieldsBeingUpdated = new Map<SObjectField, Object>();
-        
-        try {
-            System.debug('request: ' + request);
-            response = http.send(request);
-            
-            System.debug('response: ' + response);
-            
-            sReturn = response.getBody();
-            System.debug(sReturn);
-            // parsedResponseBody = (MarteServiceResponseWrapper.GenericResponse)json.deserialize(sReturn, MarteServiceResponseWrapper.GenericResponse.class);       
-            
-            
-            
-        } catch(Exception genericException) { 
-            sReturn = genericException.getMessage();
-            system.debug('sReturn: ' + sReturn + ' ' + genericException.getLineNumber());
-            system.debug('exception: ' + genericException.getStackTraceString());
-        }
-        
+  
     }
 }

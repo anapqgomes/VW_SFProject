@@ -10,6 +10,12 @@ public class AssetTriggerHandler {
     
     //========================================================= Handler Methods ==========================================================
     
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //Creates child Assets representing subscriptions
+    //Parameters:
+    // Map<Id, Asset> created Updated Records
+    // Returns: void
+    //------------------------------------------------------------------------------------------------------------------------------------
     public static void createChildAssets(Map<Id, Asset> assetsToProcess){
         List<Asset> assetsToInsert = new List<Asset>();
         
@@ -40,7 +46,5 @@ public class AssetTriggerHandler {
             
         } 
     }
-    
-    
     
 }

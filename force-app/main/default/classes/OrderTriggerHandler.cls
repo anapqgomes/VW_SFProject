@@ -13,6 +13,13 @@ public class OrderTriggerHandler {
     
     //========================================================= Handler Methods ==========================================================
     
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //Checks if there are more than one active Order
+    //Parameters:
+    // Map<Id, Order> newly Updated Records
+    // Map<Id, Order> old records
+    // Returns: void
+    //------------------------------------------------------------------------------------------------------------------------------------
     public static void checkForActiveOrders(Map<Id, Order> newObjMap, Map<Id, Order> oldObjMap) {
         Set<Id> parentOpportunityIds = new Set<Id>();
         Set<Id> activeOrderIds = new Set<Id>();
@@ -57,6 +64,13 @@ public class OrderTriggerHandler {
         
     }
     
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //When Order is activated, set the Price Book on Opportunity
+    //Parameters:
+    // Map<Id, Order> newly Updated Records
+    // Map<Id, Order> old records
+    // Returns: void
+    //------------------------------------------------------------------------------------------------------------------------------------
     public static void setPriceBook(Map<Id, Order> newObjMap, Map<Id, Order> oldObjMap){
         Set<Id> parentOpportunityIds = new Set<Id>();
         Map<Id, Order> activeOrders = new Map<Id, Order>();
@@ -92,6 +106,13 @@ public class OrderTriggerHandler {
         }
     }
     
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //When Order is inactivated, remove products from opportunity
+    //Parameters:
+    // Map<Id, Opportunity> newly Updated Records
+    // Map<Id, Opportunity> old records
+    // Returns: void
+    //------------------------------------------------------------------------------------------------------------------------------------
     public static void checkForInactiveOrders(Map<Id, Order> newObjMap, Map<Id, Order> oldObjMap){
         Set<Id> parentOpportunityIds = new Set<Id>();
         Map<Id, Order> inactiveOrders = new Map<Id, Order>();
@@ -121,6 +142,13 @@ public class OrderTriggerHandler {
     }
     
     //========================================================= Utility Methods ==========================================================    
+    
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //Creates Products (line items) on Opportunity for each Order Item
+    //Parameters:
+    // Set<Id> Ids of the active Order for each Opportunity that entered the trigger (to query order items)
+    // Returns: void
+    //------------------------------------------------------------------------------------------------------------------------------------
     public static void createProducts(set<Id> activeOrders){
         
         //get the order items related to each order that was activated

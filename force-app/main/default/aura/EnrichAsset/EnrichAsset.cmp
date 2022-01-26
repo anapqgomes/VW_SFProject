@@ -1,0 +1,14 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="EnrichAssetController" >
+	<aura:handler event="force:refreshView" action="{!c.callControllerAPI1}" />
+     <lightning:card  title="Enrich Asset Data">
+         <p class="slds-p-horizontal_medium">
+            This action will update the Asset record with information from external system.
+        </p>
+         
+        <div class="slds-p-around--small">  
+            <lightning:button variant="brand" label="Update Asset" onclick="{! c.callControllerAPI }"/>
+        </div>
+    </lightning:card>
+    
+
+</aura:component>
